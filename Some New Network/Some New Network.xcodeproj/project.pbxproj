@@ -49,6 +49,7 @@
 		99C111D42795D634009BED3A /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C111D32795D634009BED3A /* AvatarView.swift */; };
 		99D77C4327C91DF3001892AB /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D77C4227C91DF3001892AB /* Enums.swift */; };
 		99DE1DA62790365F0036EBCD /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DE1DA52790365F0036EBCD /* Storage.swift */; };
+		99E92D6A27E0EB5B001E182C /* RealmCasheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E92D6927E0EB5B001E182C /* RealmCasheService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +95,7 @@
 		99C111D32795D634009BED3A /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		99D77C4227C91DF3001892AB /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		99DE1DA52790365F0036EBCD /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		99E92D6927E0EB5B001E182C /* RealmCasheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmCasheService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 		991DF5E627C4A3C4004849A0 /* NetworkService */ = {
 			isa = PBXGroup;
 			children = (
+				99E92D6827E0EB21001E182C /* RealmService */,
 				991DF5E727C4A426004849A0 /* Singleton */,
 				99DE1DA52790365F0036EBCD /* Storage.swift */,
 				991DF5E827C4A536004849A0 /* ServiceVK.swift */,
@@ -293,6 +296,14 @@
 			path = FotoViewController;
 			sourceTree = "<group>";
 		};
+		99E92D6827E0EB21001E182C /* RealmService */ = {
+			isa = PBXGroup;
+			children = (
+				99E92D6927E0EB5B001E182C /* RealmCasheService.swift */,
+			);
+			path = RealmService;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -375,6 +386,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				993A038C27BC350500B94CD9 /* Session.swift in Sources */,
+				99E92D6A27E0EB5B001E182C /* RealmCasheService.swift in Sources */,
 				99287756278EEF2C00454FED /* MyFriendsViewController+TableDataSource.swift in Sources */,
 				99C111B027927BE4009BED3A /* FotoViewController.swift in Sources */,
 				9958A00427BC2B7E00CC4AD1 /* AnimatorPop.swift in Sources */,

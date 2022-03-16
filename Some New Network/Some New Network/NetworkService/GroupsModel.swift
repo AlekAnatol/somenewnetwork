@@ -23,11 +23,17 @@ class Groups: Object, Decodable {
     
     @objc dynamic var id = 0
     @objc dynamic var name = ""
+    @objc dynamic var isMember = 0
     @objc dynamic var photo = ""
     
     enum CodingKeys: String, CodingKey {
         case id
         case name
+        case isMember = "is_member"
         case photo = "photo_100"
+    }
+    
+    override class func primaryKey() -> String? {
+        return "id"
     }
 }

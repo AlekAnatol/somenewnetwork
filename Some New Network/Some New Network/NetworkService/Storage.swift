@@ -18,7 +18,7 @@ class Storage: NSObject {
     let allGroupsDescription = ["Meet cookers": "We are NOT vegans", "Little helpers": "We can teach your children to cook", "Pancakes": "All fillings", "Best fish recepies": "Yummi!", "Italian souces": "Mama mia!"]
     var cookingGroups = [Groups]()
     var myGroups = [Groups]()
-    var myFriends = [Friends]()
+    //var myFriends = [Friends]()
     var friendsPhotos = [Int: [PhotoLikes]]()
 }
 
