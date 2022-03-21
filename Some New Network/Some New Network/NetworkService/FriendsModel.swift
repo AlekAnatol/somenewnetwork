@@ -32,4 +32,8 @@ class Friends: Object, Decodable {
         case lastName = "last_name"
         case photo50 = "photo_50"
     }
+    
+    override class func primaryKey() -> String? {
+        return "id"
+    }
 }

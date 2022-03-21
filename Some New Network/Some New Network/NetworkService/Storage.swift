@@ -14,11 +14,11 @@ class Storage: NSObject {
         super.init()
     }
     
-    let allGroupsNames = ["Meet cookers", "Little helpers", "Pancakes", "Best fish recepies", "Italian souces"]
-    let allGroupsDescription = ["Meet cookers": "We are NOT vegans", "Little helpers": "We can teach your children to cook", "Pancakes": "All fillings", "Best fish recepies": "Yummi!", "Italian souces": "Mama mia!"]
-    var cookingGroups = [Groups]()
-    var myGroups = [Groups]()
-    var myFriends = [Friends]()
+    //let allGroupsNames = ["Meet cookers", "Little helpers", "Pancakes", "Best fish recepies", "Italian souces"]
+    //let allGroupsDescription = ["Meet cookers": "We are NOT vegans", "Little helpers": "We can teach your children to cook", "Pancakes": "All fillings", "Best fish recepies": "Yummi!", "Italian souces": "Mama mia!"]
+    //var cookingGroups = [Groups]()
+    //var myGroups = [Groups]()
+    //var myFriends = [Friends]()
     var friendsPhotos = [Int: [PhotoLikes]]()
 }
 

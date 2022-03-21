@@ -11,13 +11,16 @@ class MyGroupsViewController: UIViewController {
     
     @IBOutlet weak var myGroupsTableView: UITableView!
     
-    let sourceGroups = Storage.share.myGroups
-    var groups = [Group]()
+    //let sourceGroups = Storage.share.myGroups
+    var myGroups = [Groups]()
     
     private let service = ServiceVK()
+     var realm = RealmCacheService()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        myGroups.removeAll()
+        loadAMyGroupsFromRealm()
         myGroupsTableView.reloadData()
     }
     
@@ -31,5 +34,19 @@ class MyGroupsViewController: UIViewController {
         
         service.loadData(method: .cookingGroupsGet)
         
+        //myGroups.removeAll()
+        //loadAMyGroupsFromRealm()
+        //myGroupsTableView.reloadData()
+    }
+}
+
+private extension MyGroupsViewController{
+    
+    func loadAMyGroupsFromRealm() {
+        DispatchQueue.main.async {
+            let myGroupsFromRealm = self.realm.readGroups(isMember: true)
+            myGroupsFromRealm.forEach { self.myGroups.append($0) }
+            self.myGroupsTableView.reloadData()
+        }
     }
 }

@@ -14,11 +14,16 @@ extension MyGroupsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(Storage.share.myGroups[indexPath.row])
+        print(myGroups[indexPath.row])
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        Storage.share.myGroups.remove(at: indexPath.row)
+        //myGroups.remove(at: indexPath.row)
+        DispatchQueue.main.async {
+            print(self.myGroups[indexPath.row].name)
+            self.realm.deleteGroupFromMyGroups(group: self.myGroups[indexPath.row])
+        }
+        myGroups.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .right)
     }
 }

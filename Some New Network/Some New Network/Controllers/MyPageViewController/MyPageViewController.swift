@@ -33,7 +33,8 @@ class MyPageViewController: UIViewController {
         sinceBornLabel.layer.opacity = 0.5
         
         service.loadData(method: .friendsGet)
-        //service.loadData(method: .myGroupsGet)
+        service.loadData(method: .myGroupsGet)
+        
         //fillAllGroupsData()
         
         animatePurplePoints(totalCount: 1)

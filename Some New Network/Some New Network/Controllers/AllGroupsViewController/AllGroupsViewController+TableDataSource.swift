@@ -10,23 +10,29 @@ import UIKit
 extension AllGroupsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Storage.share.cookingGroups.count
+        return allGroups.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = allGroupsTableView.dequeueReusableCell(withIdentifier: reuseIdentifierUniversalTableViewCell, for: indexPath) as? Universal__TableViewCell
         else {return UITableViewCell()}
         
-        //        cell.configure(image: UIImage(named: Storage.share.allGroupsNames[indexPath.row]),
-        //                       name: Storage.share.allGroupsNames[indexPath.row],
-        //                       description: Storage.share.allGroupsDescription[Storage.share.allGroupsNames[indexPath.row]])
-        //        cell.configure(group: Storage.share.allGroups[indexPath.row])
+//        cell.configure(group: allGroups[indexPath.row], completion: {[weak self] in
+//            guard let self = self else {return}
+//            print(self.allGroups[indexPath.row])
+//            //print(group)
+//            if !self.isAlreadyAdded(index: indexPath.row) {
+//
+//                Storage.share.myGroups.append(Storage.share.cookingGroups[indexPath.row])
+//            }
+//        })
         
-        cell.configure(group: Storage.share.cookingGroups[indexPath.row], completion: {[weak self] in
+        cell.configure(group: allGroups[indexPath.row], completion: {[weak self] in
             guard let self = self else {return}
-            print(Storage.share.cookingGroups[indexPath.row])
-            if !self.isAlreadyAdded(index: indexPath.row) {
-                Storage.share.myGroups.append(Storage.share.cookingGroups[indexPath.row])
+            print("add to my groups \(self.allGroups[indexPath.row].name)")
+            
+            DispatchQueue.main.async {
+                self.realm.addGroupToMyGroups(group: self.allGroups[indexPath.row])
             }
         })
         return cell

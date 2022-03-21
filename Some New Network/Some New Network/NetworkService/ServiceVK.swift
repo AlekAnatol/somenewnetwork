@@ -18,6 +18,7 @@ class ServiceVK {
     
     private let scheme = "https"
     private let host = "api.vk.com"
+    //private let realm = RealmCacheService()
     
     func loadData(method: ApiMethods) {
         guard Session.instance.token != nil else { return }
@@ -37,47 +38,60 @@ class ServiceVK {
             }
             let jsonDecoder = JSONDecoder()
             
-            if method == .friendsGet {
-                //let jsonDecoder = JSONDecoder()
+            DispatchQueue.main.async {
                 
-                do {
-                    let result = try jsonDecoder.decode(FriendsModel.self, from: data).response.items
-                    Storage.share.myFriends = result//.response.items
-                    self.saveInfoInRealm(info: result)
+                if method == .friendsGet {
+                    //let jsonDecoder = JSONDecoder()
+                    
+                    do {
+                        let result = try jsonDecoder.decode(FriendsModel.self, from: data).response.items
+                        //Storage.share.myFriends = result//.response.items
+                        //print()
+                       
+                        //self.realm.create(objects: result)
+                        
+                        self.saveInfoInRealm(info: result)
+                    }
+                    catch {
+                        print("Error didn't decode Friends")
+                    }
+                    
+                }   else  if method == .myGroupsGet  {
+                    // let jsonDecoder = JSONDecoder()
+                    
+                    do {
+                        let result = try jsonDecoder.decode(GroupsModel.self, from: data).response.items
+                        //Storage.share.myGroups = result//.response.items
+                        //print("MY GROUPS LOADED \(result)")
+                        self.saveInfoInRealm(info: result)//.response.items)
+                        
+                        //self.realm.create(objects: result)
+                        
+                    }
+                    catch {
+                        print("Error didn't decode My Groups")
+                    }
                 }
-                catch {
-                    print("Error")
-                }
-                
-            }   else  if method == .myGroupsGet  {
-               // let jsonDecoder = JSONDecoder()
-                
-                do {
-                    let result = try jsonDecoder.decode(GroupsModel.self, from: data).response.items
-                    Storage.share.myGroups = result//.response.items
-                    self.saveInfoInRealm(info: result)//.response.items)
-                    print("MY GROUPS LOADED \(result)")
-                }
-                catch {
-                    print("Error")
-                }
-            }
-            else  if method == .cookingGroupsGet {
-                
-                do {
-                    let result = try jsonDecoder.decode(GroupsModel.self, from: data).response.items
-                    Storage.share.cookingGroups = result//.response.items
-                    self.saveInfoInRealm(info: result)//.response.items)
-                }
-                catch {
-                    print("Error")
+                else  if method == .cookingGroupsGet {
+                    
+                    do {
+                        let result = try jsonDecoder.decode(GroupsModel.self, from: data).response.items
+                        //Storage.share.cookingGroups = result//.response.items
+                        self.saveInfoInRealm(info: result)//.response.items)
+                       
+                        //self.realm.create(objects: result)
+                        
+                    }
+                    catch {
+                        print("Error didn't decode Cooking Groups")
+                    }
                 }
             }
         }
         task.resume()
     }
     
-    func loadPhotos() -> () {
+  /*  func loadPhotos() -> () {
         guard Session.instance.token != nil else { return }
         
         let session: URLSession = {
@@ -118,16 +132,16 @@ class ServiceVK {
                     } else {
                         var thisFriendPhotos = [PhotoLikes]()
                         guard let response = result.response.items else {return}
-    
+                        
                         for photosResponse in response {
                             var newElement = PhotoLikes()
                             newElement.photoLikesCount = photosResponse.likes.likesCount
-                                for photoSize in photosResponse.sizes {
-                                    if photoSize.type == "m" {
-                                        newElement.photoURL = photoSize.url
-                                        thisFriendPhotos.append(newElement)
-                                    }
+                            for photoSize in photosResponse.sizes {
+                                if photoSize.type == "m" {
+                                    newElement.photoURL = photoSize.url
+                                    thisFriendPhotos.append(newElement)
                                 }
+                            }
                         }
                         print("For friend id \(friend.id) count of photos: \(thisFriendPhotos.count)")
                         Storage.share.friendsPhotos[friend.id] = thisFriendPhotos
@@ -141,56 +155,57 @@ class ServiceVK {
             task.resume()
         }
     }
+    */
+    private func urlSettings(method: ApiMethods) -> URLComponents {
+        var urlComponenets = URLComponents()
+        urlComponenets.scheme = scheme
+        urlComponenets.host = host
+        urlComponenets.path = method.rawValue
         
-        private func urlSettings(method: ApiMethods) -> URLComponents {
-            var urlComponenets = URLComponents()
-            urlComponenets.scheme = scheme
-            urlComponenets.host = host
-            urlComponenets.path = method.rawValue
-            
-            return urlComponenets
-        }
-        
-        private func queryItemsSettings(method: ApiMethods) -> [URLQueryItem] {
-            var queryItems = [URLQueryItem]()
-            
-            switch method {
-            case .friendsGet:
-                queryItems = [URLQueryItem(name: "access_token", value: Session.instance.token),
-                              URLQueryItem(name: "v", value: "5.131"),
-                              URLQueryItem(name: "count", value: "15"),
-                              URLQueryItem(name: "fields", value: "photo_50")]
-            case .myGroupsGet:
-                queryItems = [URLQueryItem(name: "access_token", value: Session.instance.token),
-                              URLQueryItem(name: "v", value: "5.131"),
-                              URLQueryItem(name: "extended", value: "1")]
-            case .cookingGroupsGet:
-                queryItems = [URLQueryItem(name: "access_token", value: Session.instance.token),
-                              URLQueryItem(name: "v", value: "5.131"),
-                              URLQueryItem(name: "q", value: "Кулинария"),
-                              URLQueryItem(name: "type", value: "group"),
-                              URLQueryItem(name: "count", value: "10")]
-            case .getPhotos:
-                queryItems = [URLQueryItem(name: "access_token", value: Session.instance.token),
-                              URLQueryItem(name: "album_id", value: "wall"),
-                              URLQueryItem(name: "extended", value: "1"),
-                              URLQueryItem(name: "v", value: "5.131"),
-                              URLQueryItem(name: "count", value: "12")]
-            }
-            return queryItems
-        }
+        return urlComponenets
     }
+    
+    private func queryItemsSettings(method: ApiMethods) -> [URLQueryItem] {
+        var queryItems = [URLQueryItem]()
+        
+        switch method {
+        case .friendsGet:
+            queryItems = [URLQueryItem(name: "access_token", value: Session.instance.token),
+                          URLQueryItem(name: "v", value: "5.131"),
+                          URLQueryItem(name: "count", value: "15"),
+                          URLQueryItem(name: "fields", value: "photo_50")]
+        case .myGroupsGet:
+            queryItems = [URLQueryItem(name: "access_token", value: Session.instance.token),
+                          URLQueryItem(name: "v", value: "5.131"),
+                          URLQueryItem(name: "extended", value: "1")]
+        case .cookingGroupsGet:
+            queryItems = [URLQueryItem(name: "access_token", value: Session.instance.token),
+                          URLQueryItem(name: "v", value: "5.131"),
+                          URLQueryItem(name: "q", value: "Кулинария"),
+                          URLQueryItem(name: "type", value: "group"),
+                          URLQueryItem(name: "count", value: "10")]
+        case .getPhotos:
+            queryItems = [URLQueryItem(name: "access_token", value: Session.instance.token),
+                          URLQueryItem(name: "album_id", value: "wall"),
+                          URLQueryItem(name: "extended", value: "1"),
+                          URLQueryItem(name: "v", value: "5.131"),
+                          URLQueryItem(name: "count", value: "12")]
+        }
+        return queryItems
+    }
+}
 
 extension ServiceVK {
     func saveInfoInRealm <T: Object> (info: [T]) {
         do {
+
             let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
             let realm = try Realm(configuration: config)
-            //let realm = try Realm()
             print(realm.configuration.fileURL)
             realm.beginWrite()
-            realm.add(info)
+            realm.add(info, update: .modified)
             try realm.commitWrite()
+
         }
         catch {
             print("ITS ERROR: \(error)")
