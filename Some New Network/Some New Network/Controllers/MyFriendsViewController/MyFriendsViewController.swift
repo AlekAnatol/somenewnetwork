@@ -34,18 +34,8 @@ class MyFriendsViewController: UIViewController {
         
         myFriendsTableView.register(UINib(nibName: "Universal  TableViewCell", bundle: nil), forCellReuseIdentifier: reuseIdentifierUniversalTableViewCell)
         
-        print("FRIEDS preLOADED FROM REALM")
-       // DispatchQueue.main.async {
-        let friendsFromRealm = self.realm.read(object: Friends.self)
-            print(friendsFromRealm)
-            friendsFromRealm.forEach { self.friends.append($0) }
-            //self.myFriendsTableView.reloadData()
-       // }
-        
-        print("FRIEDS LOADED FROM REALM: \(friends)")
+        self.loadMyFriendsFromRealm()
         sourceFriends = friends
-        //friends = Storage.share.myFriends
-        //service.loadPhotos()
     }
 }
 
@@ -54,12 +44,22 @@ extension MyFriendsViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             friends = sourceFriends
-
         } else {
             friends = sourceFriends.filter({sourceFriendsItem in
                 sourceFriendsItem.firstName.lowercased().contains(searchText.lowercased())
             })
         }
         myFriendsTableView.reloadData()
+    }
+}
+
+private extension MyFriendsViewController{
+    
+    func loadMyFriendsFromRealm() {
+        DispatchQueue.main.async {
+            let friendsFromRealm = self.realm.read(object: Friends.self)
+            friendsFromRealm.forEach { self.friends.append($0) }
+            self.myFriendsTableView.reloadData()
+        }
     }
 }

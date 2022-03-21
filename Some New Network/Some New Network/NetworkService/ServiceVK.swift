@@ -46,7 +46,10 @@ class ServiceVK {
                     do {
                         let result = try jsonDecoder.decode(FriendsModel.self, from: data).response.items
                         //Storage.share.myFriends = result//.response.items
+                        //print()
+                       
                         //self.realm.create(objects: result)
+                        
                         self.saveInfoInRealm(info: result)
                     }
                     catch {
@@ -58,9 +61,11 @@ class ServiceVK {
                     
                     do {
                         let result = try jsonDecoder.decode(GroupsModel.self, from: data).response.items
-                        Storage.share.myGroups = result//.response.items
+                        //Storage.share.myGroups = result//.response.items
                         //print("MY GROUPS LOADED \(result)")
                         self.saveInfoInRealm(info: result)//.response.items)
+                        
+                        //self.realm.create(objects: result)
                         
                     }
                     catch {
@@ -71,8 +76,11 @@ class ServiceVK {
                     
                     do {
                         let result = try jsonDecoder.decode(GroupsModel.self, from: data).response.items
-                        Storage.share.cookingGroups = result//.response.items
+                        //Storage.share.cookingGroups = result//.response.items
                         self.saveInfoInRealm(info: result)//.response.items)
+                       
+                        //self.realm.create(objects: result)
+                        
                     }
                     catch {
                         print("Error didn't decode Cooking Groups")
@@ -190,15 +198,14 @@ class ServiceVK {
 extension ServiceVK {
     func saveInfoInRealm <T: Object> (info: [T]) {
         do {
-            
+
             let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
             let realm = try Realm(configuration: config)
-            //let realm = try Realm()
             print(realm.configuration.fileURL)
             realm.beginWrite()
             realm.add(info, update: .modified)
             try realm.commitWrite()
-            
+
         }
         catch {
             print("ITS ERROR: \(error)")
